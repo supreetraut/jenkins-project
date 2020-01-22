@@ -5,7 +5,7 @@ node{
         git url: 'https://github.com/supreetraut/jenkins-project.git'
     }
     stage('Build Image'){
-        app = docker.build('localhost:5000/jenkins_role_strategy')
+        app = docker.build('localhost:5000/jenkins_role_strategy:latest')
     }
     stage('Test Image'){
         app.inside{
