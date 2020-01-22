@@ -1,0 +1,134 @@
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+        - assignments:
+          - "admin"
+          name: "admin"
+          pattern: ".*"
+          permissions:
+          - "Job/Build"
+          - "Lockable Resources/View"
+          - "Credentials/Delete"
+          - "Credentials/ManageDomains"
+          - "Lockable Resources/Unlock"
+          - "View/Create"
+          - "Agent/Configure"
+          - "Job/Read"
+          - "Credentials/Update"
+          - "Agent/Create"
+          - "Job/Delete"
+          - "Agent/Build"
+          - "View/Configure"
+          - "Lockable Resources/Reserve"
+          - "Agent/Provision"
+          - "SCM/Tag"
+          - "Job/Create"
+          - "Job/Discover"
+          - "Credentials/View"
+          - "Agent/Connect"
+          - "Agent/Delete"
+          - "Run/Replay"
+          - "Agent/Disconnect"
+          - "Run/Delete"
+          - "Job/Cancel"
+          - "Overall/Read"
+          - "Run/Update"
+          - "Credentials/Create"
+          - "Overall/Administer"
+          - "View/Delete"
+          - "Job/Configure"
+          - "Job/Workspace"
+          - "View/Read"
+        - name: "deployer"
+          pattern: ".*"
+          permissions:
+          - "Overall/Read"
+          - "Job/Build"
+          - "Job/Read"
+          - "Agent/Build"
+          - "View/Read"
+        - name: "developer"
+          pattern: ".*"
+          permissions:
+          - "Job/Cancel"
+          - "Overall/Read"
+          - "Job/Build"
+          - "Job/Delete"
+          - "Job/Create"
+          - "Job/Discover"
+          - "Job/Read"
+          - "Agent/Build"
+          - "Job/Configure"
+          - "Job/Workspace"
+          - "View/Read"
+        - name: "prod-deployer"
+          pattern: ".*"
+          permissions:
+          - "Overall/Read"
+          - "Job/Build"
+          - "Job/Read"
+          - "Agent/Build"
+          - "View/Read"
+        items:
+        - name: "deployer"
+          pattern: "^java.*\\|^python.*"
+          permissions:
+          - "Job/Build"
+          - "Job/Read"
+        - name: "java-developer"
+          pattern: "^java.*"
+          permissions:
+          - "Job/Cancel"
+          - "Job/Build"
+          - "Job/Delete"
+          - "Job/Create"
+          - "Job/Discover"
+          - "Job/Read"
+          - "Job/Configure"
+          - "Job/Workspace"
+        - name: "prod-deployer"
+          pattern: "^prod.*"
+          permissions:
+          - "Job/Build"
+          - "Job/Read"
+        - name: "python-developer"
+          pattern: "^python.*"
+          permissions:
+          - "Job/Cancel"
+          - "Job/Build"
+          - "Job/Delete"
+          - "Job/Create"
+          - "Job/Discover"
+          - "Job/Read"
+          - "Job/Configure"
+          - "Job/Workspace"
+  clouds:
+  - docker:
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "unix:///var/run/docker.sock"
+        readTimeout: 60
+      exposeDockerHost: true
+      name: "docker"
+jobs:
+  - script: >
+      pipelineJob('Jenkins_Role_Strategy') {
+        definition {
+          cpsScm {
+            scriptPath 'Jenkinsfile'
+            scm {
+              git {
+                remote { url 'https://github.com/supreetraut/jenkins-project.git' }
+                branch '*/master'
+                extensions {}
+              }
+            }
+          }
+        }
+      }

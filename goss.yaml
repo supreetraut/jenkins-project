@@ -1,0 +1,24 @@
+file:
+  /usr/share/jenkins/config_jenkins.yaml:
+    exists: true
+    mode: "0644"
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /usr/share/jenkins/ref/plugins/role-strategy.jpi:
+    exists: true
+    mode: "0644"
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+user:
+  jenkins:
+    exists: true
+    uid: 1000
+    gid: 1000
+    groups:
+    - jenkins
+    home: /var/jenkins_home
+    shell: /bin/bash
