@@ -6,5 +6,5 @@ COPY goss.yaml /usr/share/jenkins/goss.yaml
 COPY jenkins.yaml /usr/share/jenkins/config_jenkins.yaml
 COPY plugins.txt /usr/share/jenkins/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
-USER jenkins
+VOLUME /var/run/docker.sock /usr/bin/docker
 EXPOSE 8080 50000
